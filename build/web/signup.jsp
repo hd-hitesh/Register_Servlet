@@ -18,16 +18,17 @@
         <!-- Compiled and minified JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-
     </head>
+    
     <body style="background: url(img/200108.jpg); background-size: cover; background-attachment: fixed">
-
+    
         <div class="container">
             <div class="row">
                 <div class="col m6 offset-m3">
                     <div class="card ">
                         <div class="card-content">
                             <h3 style="margin-top: 10px" class="center-align">Register Here !!</h3>
+                            <h5 id="msg" class="center-align" ></h5>
                             <div class="form center-align" >
                                 <form action="Register" method="post" id="myform">
                                     <input type="text" name="user_name" placeholder="Enter UserName">
@@ -101,7 +102,8 @@
                         
                         var f=$(this).serialize();
                         console.log(f);
-                        
+                        $(".loader").show();
+                        $("form").hide();
                         $.ajax({
                             url:"Register",
                             data:f,
@@ -109,10 +111,26 @@
                             success: function (data,textStatus,jqXHR){
                                 console.log(data);
                                 console.log("SUCCESS");
+                                $(".loader").hide();
+                                $("form").show();
+                                
+                                if(data.trim() === 'Done')
+                                {
+                                    $('#msg').html("Successfully Registered");
+                                    $('#msg').addClass("green-text");
+                                }
+                                else
+                                {
+                                    $('#msg').html("Something went wrong on server");
+                                    $('#msg').addClass("green-text");
+                                }
                             },
                             error: function (jqXHR,textStatus,errorThrown){
                                 console.log(data);
                                 console.log("ERROR");
+                                $(".loader").hide();
+                                $("form").show()
+                                $('#msg').html("Something went wrong on server");
                             }
                         })
                     })

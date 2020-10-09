@@ -37,32 +37,34 @@ public class Register extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Register</title>");            
-            out.println("</head>");
-            out.println("<body>");
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet Register</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+            
+            
             
             //Getting all the incoming detail from the request
             String name = request.getParameter("user_name");
             String email = request.getParameter("user_email");
             String password = request.getParameter("user_password");
             
-            out.println(name);
-            out.println(password);
-            out.println(email);
+//            out.println(name);
+//            out.println(password);
+//            out.println(email);
             
             db1 = new ParabitDBC();
             
             //connection...
             try{
-             
+             Thread.sleep(3000);
             String query = "insert into user(name,password,email) values('"+name+"','"+password+"','"+email+"')";
             
             db1.stm.executeUpdate(query);
             
-            out.println("<h1>Done....</h1>");
+            out.println("Done");
             }
             catch(Exception e)
             {
@@ -70,8 +72,8 @@ public class Register extends HttpServlet {
                 out.println("<h1>"+e.toString()+"</h1>");
             }
 
-            out.println("</body>");
-            out.println("</html>");
+//            out.println("</body>");
+//            out.println("</html>");
         }
     }
 
