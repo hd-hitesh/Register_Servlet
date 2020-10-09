@@ -29,7 +29,7 @@
                         <div class="card-content">
                             <h3 style="margin-top: 10px" class="center-align">Register Here !!</h3>
                             <div class="form center-align" >
-                                <form action="Register" method="post">
+                                <form action="Register" method="post" id="myform">
                                     <input type="text" name="user_name" placeholder="Enter UserName">
                                     <input type="password" name="user_password" placeholder="Enter Password">
                                     <input type="email" name="user_email" placeholder="Enter Email">
@@ -94,7 +94,28 @@
             
             <script>
                 $(document).ready(function(){
-                    console.log("Page is Readycd d");
+                    console.log("Page is Ready..");
+                    $('#myform').on('submit',function(event){
+                        console.log("HEllo")
+                        event.preventDefault();
+                        
+                        var f=$(this).serialize();
+                        console.log(f);
+                        
+                        $.ajax({
+                            url:"Register",
+                            data:f,
+                            type:'POST',
+                            success: function (data,textStatus,jqXHR){
+                                console.log(data);
+                                console.log("SUCCESS");
+                            },
+                            error: function (jqXHR,textStatus,errorThrown){
+                                console.log(data);
+                                console.log("ERROR");
+                            }
+                        })
+                    })
                 } )
             </script>
 
