@@ -5,7 +5,10 @@
  */
 package com.user;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
 import javax.servlet.ServletException;
@@ -13,11 +16,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.Part;
 
 /**
  *
  * @author Hitesh Kumar Sahu
  */
+@MultipartConfig
 public class Register extends HttpServlet {
 
     /**
@@ -50,7 +56,9 @@ public class Register extends HttpServlet {
             String name = request.getParameter("user_name");
             String email = request.getParameter("user_email");
             String password = request.getParameter("user_password");
-            
+            Part part = request.getPart("image");
+            String filename = part.getSubmittedFileName();
+//            out.println(filename);
 //            out.println(name);
 //            out.println(password);
 //            out.println(email);
@@ -60,9 +68,19 @@ public class Register extends HttpServlet {
             //connection...
             try{
              Thread.sleep(3000);
-            String query = "insert into user(name,password,email) values('"+name+"','"+password+"','"+email+"')";
+            String query = "insert into user(name,password,email,image) values('"+name+"','"+password+"','"+email+"','"+filename+"')";
             
             db1.stm.executeUpdate(query);
+            
+            //upload
+                InputStream is = part.getInputStream();
+                byte []data = new byte[is.available()];
+                is.read();
+                String path=request.getRealPath("/")+"img"+File.separator+filename;
+//                out.println(path);
+                FileOutputStream fos= new FileOutputStream(path);
+                fos.write(data);
+                fos.close();
             
             out.println("Done");
             }

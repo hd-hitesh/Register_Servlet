@@ -11,7 +11,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
 
-
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
@@ -19,9 +18,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
     </head>
-    
+
     <body style="background: url(img/200108.jpg); background-size: cover; background-attachment: fixed">
-    
+
         <div class="container">
             <div class="row">
                 <div class="col m6 offset-m3">
@@ -34,6 +33,15 @@
                                     <input type="text" name="user_name" placeholder="Enter UserName">
                                     <input type="password" name="user_password" placeholder="Enter Password">
                                     <input type="email" name="user_email" placeholder="Enter Email">
+                                    <div class="file-field input-field">
+                                        <div class="btn blue">
+                                            <span>File</span>
+                                            <input name="image" type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
                                     <button type="submit" class="btn red">Submit</button>
                                 </form>
                             </div>
@@ -92,49 +100,52 @@
                 integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" 
                 crossorigin="anonymous">
             </script>
-            
+
             <script>
-                $(document).ready(function(){
+                $(document).ready(function () {
                     console.log("Page is Ready..");
-                    $('#myform').on('submit',function(event){
+                    $('#myform').on('submit', function (event) {
                         console.log("HEllo")
                         event.preventDefault();
-                        
-                        var f=$(this).serialize();
+
+//                        var f = $(this).serialize();  //only if text data is there
+                        let f = new FormData(this);  //if we have image also
                         console.log(f);
                         $(".loader").show();
                         $("form").hide();
                         $.ajax({
-                            url:"Register",
-                            data:f,
-                            type:'POST',
-                            success: function (data,textStatus,jqXHR){
+                            url: "Register",
+                            data: f,
+                            type: 'POST',
+                            success: function (data, textStatus, jqXHR) {
                                 console.log(data);
                                 console.log("SUCCESS");
                                 $(".loader").hide();
                                 $("form").show();
                                 
-                                if(data.trim() === 'Done')
+//                                console.log("++"+data+"++");
+                                if (data.trim() === 'Done')
                                 {
                                     $('#msg').html("Successfully Registered");
                                     $('#msg').addClass("green-text");
-                                }
-                                else
+                                } else
                                 {
                                     $('#msg').html("Something went wrong on server");
-                                    $('#msg').addClass("green-text");
+                                    $('#msg').addClass("red-text");
                                 }
                             },
-                            error: function (jqXHR,textStatus,errorThrown){
+                            error: function (jqXHR, textStatus, errorThrown) {
                                 console.log(data);
                                 console.log("ERROR");
                                 $(".loader").hide();
                                 $("form").show()
                                 $('#msg').html("Something went wrong on server");
-                            }
+                            },
+                            processData: false,
+                            contentType: false
                         })
                     })
-                } )
+                })
             </script>
 
     </body>
